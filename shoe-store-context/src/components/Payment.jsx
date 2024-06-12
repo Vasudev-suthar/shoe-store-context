@@ -1,16 +1,23 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../contexts/CartContext';
 
 const Payment = () => {
   const { cartItems } = useContext(CartContext);
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState('creditCard'); // Set credit card as default
 
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
+  const handleConfirmPayment = (event) => {
+    event.preventDefault();
+    navigate('/');
+  };
+
   return (
     <div className="payment">
       <div className="payment-form">
-        <form>
+        <form onSubmit={handleConfirmPayment}>
           <div className='check-box'>
             <div>
               <input 
@@ -64,4 +71,5 @@ const Payment = () => {
 };
 
 export default Payment;
+
 

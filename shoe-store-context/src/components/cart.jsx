@@ -1,5 +1,5 @@
-// src/components/Cart.jsx
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../contexts/CartContext';
 import casualShoes from '../images/casual-shoes.webp';
 import ankleShoe from '../images/ankleshoe.jpg';
@@ -12,6 +12,7 @@ import airwaeve from '../images/airwaeve.jpg';
 
 const Cart = ({ showPaymentPage, setShowPaymentPage }) => {
     const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
+    const navigate = useNavigate();
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     const shoeImages = {
@@ -23,6 +24,16 @@ const Cart = ({ showPaymentPage, setShowPaymentPage }) => {
         'asian.jfif': asianJfif,
         'asian.jpg': asianJpg,
         'airwaeve.jpg': airwaeve,
+    };
+
+    const handleProceedToPayment = () => {
+        navigate('/payment');
+        setShowPaymentPage(true);
+    };
+
+    const handleGoBackToShopping = () => {
+        navigate('/');
+        setShowPaymentPage(false);
     };
 
     return (
@@ -52,22 +63,18 @@ const Cart = ({ showPaymentPage, setShowPaymentPage }) => {
                     ))
                 )}
                 <h3>Total: ${total.toFixed(2)}</h3>
-                {!showPaymentPage && (
-                    <div className='btn-pay-box'>
-                        <button className='btn-pay' onClick={() => setShowPaymentPage(true)}>Proceed to Payment</button>
-                    </div>
-                )}
-                {showPaymentPage && (
-                    <div className='btn-pay-box'>
-                        <button className='btn-pay' onClick={() => setShowPaymentPage(false)}>Go Back to Shopping</button>
-                    </div>
-                )}
+                <div className='btn-pay-box'>
+                    {!showPaymentPage ? (
+                        <button className='btn-pay' onClick={handleProceedToPayment}>Proceed to Payment</button>
+                     ) : ( 
+                        <button className='btn-pay' onClick={handleGoBackToShopping}>Go Back to Shopping</button>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
 
 export default Cart;
-
 
 
